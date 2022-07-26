@@ -25,12 +25,27 @@ export function createCar(req, res) {
             success: true,
             id: doc.id
         })
-
-      
       })
+      
       .catch(err => handleError(err, res))
-    // send back new doc id
-}
+      // send back new doc id
+    }
+export function updateCar(req, res) {
+    // updated cars from request body
+    const {id} = req.params;
+    // connect to database
+    const db = dbConnect();
+    // update doc (id) in cars collection using req.body
+    const car = req.body
+    db.collection('cars').doc(id).set(car, {merge: true})
+        .then(doc => {
+            res.status(201).send( {
+                success: true,
+                id: doc.id
+            })
+        })
+    }     
+
 
 function handleError(err, res) {
     console.error(err)
